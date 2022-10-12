@@ -1,11 +1,13 @@
-{% extends 'blog/main.html' %} {% block content %}
+{% extends 'blog/main.html' %}{%block title%}{{post.title}}{%endblock%} {% block content %}
 <article class="media content-section">
   <img
     class="rounded-circle article-img"
     src="{{post.author.profile.image.url}}" />
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="{% url 'user-page' post.author.username%}">{{ post.author }}</a>
+      <a class="mr-2" href="{% url 'user-page' post.author.username%}"
+        >{{ post.author }}</a
+      >
       <small class="text-muted">{{ post.date_posted|date:"F j, Y"}}</small>
       {% if post.author == request.user %}
       <a
@@ -25,4 +27,38 @@
     <p class="article-content">{{ post.content }}</p>
   </div>
 </article>
+
+{% if comments %}
+<h2 class="ml-2">Comments on this post: ({{comments.count}})</h2>
+<div class="messages-container overflow-auto">
+  {% for comment in comments %}
+  <div class="media">
+    <img
+      class="rounded-circle mr-2"
+      height="42"
+      width="42"
+      src="{{comment.author.profile.image.url}}" />
+    <div class="media-body">
+      <div class="container">
+        <a class="mr-2" href="">{{comment.author.first_name}} {{comment.author.last_name}}</a>
+        <small class="text-muted">{{comment.date_posted|timesince}} ago</small>
+        <p class="article-content">{{comment}}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% if request.user.is_authenticated %}
+<div class= "messages-container">
+  <form method="POST" action="" class="mt-4">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Leave a comment!</legend>
+      <textarea name="body" rows="3" type="text" class="w-100 h-100" placeholder="Write Your Comment Here"> </textarea>
+    </fieldset>
+    <button class="btn btn-outline-info" type="submit">Comment</button>
+  </form>
+</div>
+{% endif %}
 {% endblock content %}

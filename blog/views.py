@@ -1,18 +1,15 @@
-from django.shortcuts import render
-from .models import Post
+from django.db.models import Q
+from django.shortcuts import redirect, render
+from .models import Post, Comment
 from users.models import Profile
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
+
 # Create your views here.
 
-# def home(request):
-#     context = { 
-#         'title': 'Home',
-#         'posts' : Post.objects.all()
-#     }
-#     return render(request, 'blog/home.html', context)
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html'
@@ -20,9 +17,29 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 10
 
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        if q:
+            return Post.objects.get_queryset().filter(Q(content__icontains = q) | Q(title__icontains = q))
+        return super().get_queryset()
+
 class PostDetailView(DetailView):
     model = Post
     context_object_name='post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        comments = Comment.objects.all().filter(post__id = self.get_object().id)
+        context['comments'] = comments
+        return context
+
+    def post(self, request, **kwargs):
+        #save the comment
+        body = request.POST.get('body')
+        Comment.objects.create(author = request.user, post = self.get_object(), body = body)
+        return redirect('post-detail', self.get_object().id)
+    
+    
 
 class CreatePost(LoginRequiredMixin, CreateView):
     model = Post
@@ -54,7 +71,7 @@ class DeletePost(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def user_posts(request, username):
     author = User.objects.all().filter(username = username).get()
-    posts = Post.objects.all().filter(author=author)
+    posts = Post.objects.all().filter(author=author).order_by('-date_posted')
 
     paginator = Paginator(posts, 5)
 

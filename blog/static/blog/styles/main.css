@@ -33,7 +33,18 @@ ul {
   font-weight: 500;
 }
 
+.messages-container {
+  max-height: 50vh;
+  width: auto;
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
 .content-section {
+  width: auto;
   background: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;

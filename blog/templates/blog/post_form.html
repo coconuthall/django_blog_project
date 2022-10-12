@@ -1,4 +1,4 @@
-{% extends 'blog/main.html' %} {% load crispy_forms_tags %} {% block content %}
+{% extends 'blog/main.html' %}{%block title%}New Post{%endblock%} {% load crispy_forms_tags %} {% block content %}
 <div class="content-section">
   <form method="POST" action="">
     {% csrf_token %}
