@@ -12,16 +12,21 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import json
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+with open(os.path.join(BASE_DIR, 'config.json')) as config_file:
+    config = json.load(config_file)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9#q4bl&4(ap(-2t(_@z(g%6*o)8lv7%au8*4yzscej^y#+70!0'
+SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -138,5 +143,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'phoneguy735@gmail.com'
-EMAIL_HOST_PASSWORD = 'fivrmmkwchonqqaj'
+EMAIL_HOST_USER = config['EMAIL_USER']
+EMAIL_HOST_PASSWORD = config['EMAIL_PASSWORD']

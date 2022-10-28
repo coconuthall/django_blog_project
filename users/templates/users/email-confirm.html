@@ -1,0 +1,11 @@
+{% extends 'blog/main.html' %} {%block title%}Reset Password{%endblock%} {% load crispy_forms_tags %} {% block content %}
+{% if success %}
+<div class="alert alert-info">
+    Your account was successfully created! You can Log In now
+</div>
+{% else %}
+<div class="alert alert-warning">
+    Invalid activation link! 
+</div>
+{% endif %}
+{% endblock %}

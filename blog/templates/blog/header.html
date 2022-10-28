@@ -24,7 +24,6 @@
         <!-- Navbar Right Side -->
         <div class="navbar-nav">
           {% if request.user.is_authenticated %}
-          <a class="nav-item nav-link" href="{% url 'new-post' %}">New Post</a>
           <a class="nav-item nav-link" href="{% url 'user-page' request.user.username %}"
             >{{request.user.first_name}} {{request.user.last_name}}
           </a>

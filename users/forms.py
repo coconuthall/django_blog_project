@@ -14,11 +14,9 @@ class RegistrationForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email']
+        fields = ['first_name', 'last_name', 'username']
 
 class ProfileUpdateForm(forms.ModelForm):
     bio = forms.CharField(required=False, widget=forms.Textarea)

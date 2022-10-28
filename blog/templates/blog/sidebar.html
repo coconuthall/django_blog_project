@@ -1,0 +1,27 @@
+<div class="col-md-4">
+    <div class="content-section">
+      <h3 class="border-bottom">Menu</h3>
+      {% if request.user.is_authenticated %}
+        <ul class="list-group mt-4 mb-4">
+          <li class="list-group-item list-group-item-light">
+            <a class="text-muted" href="{% url 'home' %}">Feed</a>
+          </li>
+          <li class="list-group-item list-group-item-light">
+            <a class="text-muted" href="#">Messages</a>
+          </li>
+          <li class="list-group-item list-group-item-light">
+            <a class="text-muted" href="{% url 'new-post' %}">New Post</a>
+          </li>
+        </ul>
+      {% else %}
+      <ul class="list-group mt-4 mb-4">
+        <li class="list-group-item list-group-item-light">
+          <a class="text-muted" href="{% url 'login' %}">Log In</a>
+        </li>
+        <li class="list-group-item list-group-item-light">
+          <a class="text-muted" href="{% url 'register' %}">Register</a>
+        </li>
+      </ul>
+      {% endif %}
+    </div>
+  </div>
